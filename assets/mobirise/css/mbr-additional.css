@@ -2668,7 +2668,7 @@ body {
 
 #address_value {
 	border: 1px solid;
-	color: #F6931F;
+	color: black;
 	font-weight: normal;
 	width: 400px;
 }
@@ -2687,7 +2687,7 @@ body {
 
 #scale_value {
 	border: 0px;
-	color: #F6931F;
+	color: black;
 	background: none;
 	font-weight: bold;
 	width: 100px;
