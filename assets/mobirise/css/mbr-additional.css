@@ -2667,9 +2667,9 @@ body {
 }
 
 #address_value {
-	border: 1px solid black;
+	border: 1px solid;
 	color: #F6931F;
-	font-weight: bold;
+	font-weight: normal;
 	width: 400px;
 }
 
