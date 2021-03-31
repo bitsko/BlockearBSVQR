@@ -2751,7 +2751,7 @@ body {
     -webkit-box-pack: center;
     -ms-flex-pack: center;
     justify-content: center;
-    max-width: 33%;
+    
     align:center;
     text-align:center;
     width:430px;
