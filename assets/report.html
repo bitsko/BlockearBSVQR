@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Mornin' RUN</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="twitter:card" content="summary"/>
+        <meta name="twitter:creator" content="@cryptoacorns"/>
+       
+    </head>
+    <body>
+        <div class="grid-container"></div>
+        <div class="page">
+            <div class="top-left">
+                <div class="title">RUN REPORT</div>
+                <div class="heading">
+                    <div class="today" id="today"></div>
+                    <div class="mktcap" id="mktcap">Total Value $</div>
+                </div>
+                
+                <div class="coins">
+                    <table class="tg">
+                        <thead>
+                            <tr class="tablerow">
+                                <th class="tg-cell">#</th>
+                                <th class="tg-cell"></th>
+                                <th class="tg-cell">Name</th>
+                                <th class="tg-cell">Price</th>
+                                <th class="tg-cell numcell">Market Cap</th>
+                                <th class="tg-cell numcell">Vol. (24 hr)</th>
+                                <th class="tg-cell numcell">Supply</th>
+                                <th class="placeholder"></th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="lds-ellipsis" id="loading"><div></div><div></div><div></div><div></div></div>
+                </div>
+            </div>
+            
+            <div class="right-column">
+                <div class="sideart">
+
+                </div>
+                <div class="ad">
+                  
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+<script>
+    var totalMarketcap = 0, totalVolume = 0, bsvPrice = 0, tokens = [], count = 0;
+    const today = new Date().toString().substr(0, 15);
+    document.getElementById('today').innerText = today;
+    generateTable = (table, data) => {
+        for (let element of data) {
+            let row = table.insertRow();
+            for (key in element) {
+                let cell = row.insertCell();
+                let text = document.createTextNode(element[key]);
+                if (key === 'image') { cell.innerHTML = element.image }
+                else if (key === 'name') {
+                    cell.innerHTML = `<a href="https://relayx.com/market/${element.name}" rel="noreferrer" name="ticker" target="_blank" class="ticker">${element.name}</a>`;
+                }
+                else { cell.appendChild(text) }
+            }
+        }
+    }
+    formatNumber = num => { return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') }
+    populate = async() => {
+        let r = await fetch(`https://mornin.run/marketcap`);
+        let data = await r.json();
+        data.forEach(d => {
+            count++;
+            let mcdec = d.marketcap.toFixed(2).substr(-2);
+            totalMarketcap += d.marketcap;
+            let voldec = d.volume.toFixed(2).substr(-2);
+            let row = {
+                rank: count,
+                
+                name: d.symbol === 'NC' ? 'NPC' : d.symbol,
+                price: `$${d.price.toFixed(3)}`,
+                marketcap: `$${formatNumber(parseInt(d.marketcap))}.${mcdec}`,
+                volume: `$${formatNumber(parseInt(d.volume))}.${voldec}`,
+                supply: formatNumber(d.supply),
+                placeholder: ''
+            }
+            tokens.push(row);
+        })
+        let totalmcdec = totalMarketcap.toFixed(2).substr(-2);
+        let totalvoldec = totalVolume.toFixed(2).substr(-2);
+        document.getElementById('mktcap').innerText += `${formatNumber(parseInt(totalMarketcap))}.${totalmcdec}`;
+        const table = document.querySelector('table');
+        generateTable(table, tokens);
+        document.getElementById('loading').style.display = 'none';
+    }
+    populate();
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/serviceworker.js')
+        .then((registration) => {console.log('Registration successful, scope is:', registration.scope)})
+        .catch((error) => {console.log('Service worker registration failed, error:', error)});
+    }
+</script>
