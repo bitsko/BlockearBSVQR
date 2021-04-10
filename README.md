@@ -10,4 +10,8 @@ get notified when a new BSV block has been found and the time elapsed since the 
 and fork of https://github.com/nicolasgramlich/CryptoCoinQR for bsv. add image to center of QR code
 
 sideshift.ai widget
+
+crypto converter widget
+
 tradingview widget
+
