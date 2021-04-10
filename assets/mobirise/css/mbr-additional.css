@@ -565,7 +565,7 @@ a.text-black:focus {
 }
 a,
 a:hover {
-  text-color: black;
+  color: black;
 }
 .mbr-plan-header.bg-primary .mbr-plan-subtitle,
 .mbr-plan-header.bg-primary .mbr-plan-price-desc {
